@@ -1,0 +1,95 @@
+---
+import { site, serviceAreas, trustBadges } from '../data/site';
+---
+
+<section
+  id="service-area"
+  aria-labelledby="service-area-heading"
+  class="section section-band surface-brutal"
+>
+  <div class="container-page">
+    <div class="max-w-2xl">
+      <p class="eyebrow">Where I Work</p>
+      <h2 id="service-area-heading" class="heading-sm mt-5 text-steel-50 uppercase">
+        Service Area
+      </h2>
+      <p class="lede mt-5">{site.serviceArea}</p>
+    </div>
+
+    <ul class="mt-10 grid grid-cols-2 gap-px border border-steel-800 bg-steel-800 sm:grid-cols-3 lg:grid-cols-4">
+      {
+        serviceAreas.map((area) => (
+          <li class="flex items-center gap-2 bg-steel-900 px-4 py-3.5 transition-colors hover:bg-steel-800">
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              class="h-3.5 w-3.5 shrink-0 text-gold-500"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span class="truncate font-mono text-[0.6875rem] tracking-[0.1em] text-steel-300 uppercase">
+              {area}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- Credentials plate -->
+    <div class="card-plate mt-10 p-6 sm:p-8">
+      <div class="rule-accent absolute inset-x-0 top-0" aria-hidden="true"></div>
+      <dl class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          trustBadges.map((badge) => (
+            <div>
+              <dt class="flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.18em] text-gold-400 uppercase">
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  class="h-4 w-4 shrink-0 text-red-300"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+                {badge.label}
+              </dt>
+              <dd class="mt-2 pl-6 text-sm leading-snug text-steel-300">{badge.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <!-- Conversion band -->
+    <div class="card-plate relative mt-6 overflow-hidden p-7 sm:p-10">
+      <div class="rule-accent absolute inset-x-0 top-0" aria-hidden="true"></div>
+      <div class="flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <p class="font-display text-3xl leading-tight text-steel-50 uppercase sm:text-4xl">
+            Tell me what you&rsquo;re trying to fix.
+          </p>
+          <p class="mt-3 max-w-[46ch] text-sm leading-relaxed text-steel-300">
+            Free estimate, no obligation, and a straight answer on whether it&rsquo;s
+            worth doing at all.
+          </p>
+        </div>
+        <div class="flex w-full shrink-0 flex-col gap-3 sm:w-auto sm:flex-row">
+          <a href="#quote" class="btn-cta w-full sm:w-auto">Get a Free Estimate</a>
+          <a href={site.phoneHref} class="btn-ghost w-full sm:w-auto">
+            {site.phoneDisplay}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

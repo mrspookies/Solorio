@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Hero from '../components/Hero.astro';
+import StatusTicker from '../components/StatusTicker.astro';
+import TrustBar from '../components/TrustBar.astro';
+import ServicesGrid from '../components/ServicesGrid.astro';
+import Portfolio from '../components/Portfolio.astro';
+import AboutCraftsman from '../components/AboutCraftsman.astro';
+import ServiceArea from '../components/ServiceArea.astro';
+import QuoteRequest from '../components/QuoteRequest.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+
+<BaseLayout>
+  <SiteHeader />
+
+  <main id="main">
+    <Hero />
+    <StatusTicker />
+    <TrustBar />
+    <ServicesGrid />
+    <Portfolio />
+    <AboutCraftsman />
+    <ServiceArea />
+    <QuoteRequest />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

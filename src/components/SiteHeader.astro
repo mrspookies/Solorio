@@ -1,0 +1,303 @@
+---
+import { site, navItems } from '../data/site';
+
+const cta = navItems.find((item) => item.href === '#quote');
+---
+
+<header
+  id="site-header"
+  class="sticky top-0 z-50 border-b border-steel-800 bg-steel-950/85 backdrop-blur-md"
+>
+  <div class="container-page">
+    <div class="flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
+      <!-- Typographic wordmark. No logo asset — text only, with a hi-vis tick. -->
+      <a
+        href="#top"
+        class="group flex shrink-0 items-center gap-2.5"
+        aria-label={`${site.name} — home`}
+      >
+        <span
+          class="h-6 w-1.5 bg-red-500 transition-colors group-hover:bg-red-400"
+          aria-hidden="true"></span>
+        <span class="flex flex-col leading-none">
+          <span
+            class="font-display text-xl tracking-[0.18em] text-steel-50 sm:text-2xl"
+            >{site.name.toUpperCase()}</span
+          >
+          <span
+            class="mt-0.5 font-mono text-[0.5rem] tracking-[0.32em] text-steel-500 uppercase"
+            >Carpentry &amp; General Contracting</span
+          >
+        </span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav aria-label="Primary" class="hidden lg:block">
+        <ul class="flex items-center gap-1">
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="group relative block px-3 py-2 font-mono text-[0.6875rem] tracking-[0.16em] text-steel-300 uppercase transition-colors hover:text-gold-300"
+                >
+                  {item.label}
+                  <span
+                    class="absolute inset-x-3 bottom-0.5 h-px origin-left scale-x-0 bg-gold-500 transition-transform duration-300 group-hover:scale-x-100"
+                    aria-hidden="true"
+                  />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a
+          href={site.phoneHref}
+          class="hidden items-center gap-2 font-mono text-[0.6875rem] tracking-[0.12em] text-steel-300 uppercase transition-colors hover:text-gold-300 sm:inline-flex lg:hidden xl:inline-flex"
+        >
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            class="h-3.5 w-3.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"
+            ></path>
+          </svg>
+          {site.phoneDisplay}
+        </a>
+
+        {
+          cta && (
+            <a href={cta.href} class="btn-cta hidden px-4 py-2.5 text-sm sm:inline-flex">
+              {cta.label}
+            </a>
+          )
+        }
+
+        <!-- Mobile toggle -->
+        <button
+          type="button"
+          id="nav-toggle"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          aria-label="Open menu"
+          class="-mr-1 inline-flex h-10 w-10 shrink-0 items-center justify-center border border-steel-700 text-steel-200 transition-colors hover:border-gold-500 hover:text-gold-300 lg:hidden"
+        >
+          <span class="relative block h-3.5 w-5" aria-hidden="true">
+            <span
+              data-bar="top"
+              class="absolute inset-x-0 top-0 h-0.5 bg-current transition-transform duration-300"
+            ></span>
+            <span
+              data-bar="mid"
+              class="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 bg-current transition-opacity duration-200"
+            ></span>
+            <span
+              data-bar="bot"
+              class="absolute inset-x-0 bottom-0 h-0.5 bg-current transition-transform duration-300"
+            ></span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile panel. grid-rows trick animates open/closed without hiding from AT.
+       `inert` is set in the markup so the collapsed panel is never focusable or
+       announced, even before the script runs (no-JS safety). -->
+  <div
+    id="mobile-nav"
+    class="grid grid-rows-[0fr] border-t border-steel-800 transition-[grid-template-rows] duration-300 ease-out lg:hidden"
+    data-state="closed"
+    inert
+  >
+    <div class="overflow-hidden">
+      <nav aria-label="Mobile" class="container-page bg-steel-900 py-4">
+        <ul class="flex flex-col divide-y divide-steel-800">
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="flex items-center justify-between py-3.5 font-display text-2xl tracking-[0.06em] text-steel-200 uppercase transition-colors hover:text-gold-300"
+                >
+                  {item.label}
+                  <span class="text-red-300" aria-hidden="true">
+                    &rarr;
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="mt-5 grid gap-2.5">
+          {
+            cta && (
+              <a href={cta.href} class="btn-cta w-full">
+                {cta.label}
+              </a>
+            )
+          }
+          <a href={site.phoneHref} class="btn-ghost w-full">
+            Call {site.phoneDisplay}
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Machined scroll-progress edge -->
+  <div
+    id="scroll-progress"
+    class="h-0.5 origin-left scale-x-0 bg-gradient-to-r from-gold-500 to-red-500"
+    aria-hidden="true"
+  ></div>
+</header>
+
+<script>
+  function initHeader() {
+    const toggleEl = document.getElementById('nav-toggle');
+    const panelEl = document.getElementById('mobile-nav');
+    const progressEl = document.getElementById('scroll-progress');
+
+    // Explicit types so the closures below need no further narrowing.
+    if (!(toggleEl instanceof HTMLButtonElement) || !(panelEl instanceof HTMLElement)) return;
+    const toggle: HTMLButtonElement = toggleEl;
+    const panel: HTMLElement = panelEl;
+    const progress: HTMLElement | null = progressEl;
+
+    const bars = {
+      top: toggle.querySelector<HTMLElement>('[data-bar="top"]'),
+      mid: toggle.querySelector<HTMLElement>('[data-bar="mid"]'),
+      bot: toggle.querySelector<HTMLElement>('[data-bar="bot"]'),
+    };
+
+    const links = panel.querySelectorAll<HTMLAnchorElement>('a');
+
+    function setOpen(open: boolean): void {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      panel.dataset['state'] = open ? 'open' : 'closed';
+      panel.classList.toggle('grid-rows-[0fr]', !open);
+      panel.classList.toggle('grid-rows-[1fr]', open);
+
+      // Keep the collapsed panel out of the tab order and the accessibility tree.
+      // `inert` covers focus + AT exposure; aria-hidden is a belt-and-braces
+      // fallback for AT that has not yet implemented inert.
+      panel.toggleAttribute('inert', !open);
+      if (open) {
+        panel.removeAttribute('aria-hidden');
+      } else {
+        panel.setAttribute('aria-hidden', 'true');
+      }
+
+      if (bars.top) {
+        bars.top.style.transform = open ? 'translateY(6px) rotate(45deg)' : '';
+      }
+      if (bars.mid) {
+        bars.mid.style.opacity = open ? '0' : '';
+      }
+      if (bars.bot) {
+        bars.bot.style.transform = open ? 'translateY(-6px) rotate(-45deg)' : '';
+      }
+    }
+
+    function close(): void {
+      setOpen(false);
+    }
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Close after navigating to an in-page anchor.
+    //
+    // The panel must be collapsed BEFORE the scroll offset is computed. If we let
+    // the browser handle the hash jump first, it measures against the 415px-tall
+    // open panel; the collapse then shifts everything up by that much and the user
+    // lands hundreds of pixels past the section they tapped. So: suppress the
+    // transition, collapse instantly, force a reflow, then scroll against final
+    // layout. `scroll-margin-top` supplies the sticky-header offset.
+    links.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const href = link.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+
+        const target = document.getElementById(href.slice(1));
+        if (!target) return; // Unknown hash — fall through to default behaviour.
+
+        event.preventDefault();
+
+        panel.style.transition = 'none';
+        setOpen(false);
+        void panel.offsetHeight; // commit the collapsed layout before measuring
+        panel.style.transition = '';
+
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        if (window.location.hash !== href) {
+          window.history.pushState(null, '', href);
+        }
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        close();
+        toggle.focus();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      const target = event.target;
+      if (target instanceof Node && !panel.contains(target) && !toggle.contains(target)) {
+        close();
+      }
+    });
+
+    // Reset state if the viewport grows past the mobile breakpoint.
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    desktop.addEventListener('change', (event) => {
+      if (event.matches) close();
+    });
+
+    // Scroll progress — rAF-throttled, passive listener.
+    if (progress) {
+      let ticking = false;
+
+      const update = (): void => {
+        const doc = document.documentElement;
+        const scrollable = doc.scrollHeight - doc.clientHeight;
+        const ratio = scrollable > 0 ? doc.scrollTop / scrollable : 0;
+        progress.style.transform = `scaleX(${Math.min(Math.max(ratio, 0), 1)})`;
+        ticking = false;
+      };
+
+      const onScroll = (): void => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      };
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      update();
+    }
+
+    // Sync initial state so the collapsed panel is inert from first paint.
+    setOpen(false);
+  }
+
+  initHeader();
+  document.addEventListener('astro:after-swap', initHeader);
+</script>

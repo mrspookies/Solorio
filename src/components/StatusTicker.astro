@@ -1,0 +1,70 @@
+---
+import { site } from '../data/site';
+
+const marqueeItems = [
+  'Licensed',
+  'Insured',
+  'Permits pulled & closed by me',
+  'Written workmanship warranty',
+  'Free estimates',
+  'No subcontractors',
+  'Same-day callbacks',
+];
+---
+
+<section
+  aria-label="Current availability"
+  class="relative overflow-hidden border-y border-steel-800 bg-steel-900"
+>
+  <!-- Hazard chevron strip -->
+  <div
+    class="h-1 w-full opacity-[0.14]"
+    style="background-image: repeating-linear-gradient(-45deg, #aa0000 0 10px, transparent 10px 22px);"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="container-page flex items-center gap-3 py-3">
+    <span class="flex shrink-0 items-center gap-2.5">
+      <span
+        class="animate-pulse-dot h-2 w-2 shrink-0 rounded-full bg-red-500"
+        aria-hidden="true"></span>
+      <span class="sr-only">Availability status:</span>
+      <span
+        class="font-mono text-[0.625rem] tracking-[0.16em] text-red-300 uppercase sm:text-[0.6875rem]"
+      >
+        Status
+      </span>
+    </span>
+
+    <p class="min-w-0 truncate font-mono text-[0.6875rem] tracking-[0.1em] text-steel-200 uppercase sm:text-xs">
+      {site.availabilityNote}
+    </p>
+  </div>
+
+  <!-- Scrolling credential marquee. Track is duplicated; the copy is hidden from AT. -->
+  <div
+    class="group relative flex overflow-hidden border-t border-steel-800 py-2 select-none"
+  >
+    <div class="animate-marquee flex shrink-0 items-center gap-8 pr-8 group-hover:[animation-play-state:paused]"
+    >
+      {
+        [0, 1].map((copy) => (
+          <div
+            class="flex shrink-0 items-center gap-8 pr-8"
+            aria-hidden={copy === 1 ? 'true' : undefined}
+          >
+            {marqueeItems.map((item) => (
+              <span class="flex items-center gap-8 font-mono text-[0.625rem] tracking-[0.2em] text-steel-500 uppercase">
+                {item}
+                <span class="text-gold-600" aria-hidden="true">
+                  /&bull;
+                </span>
+              </span>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,66 @@
+---
+/**
+ * PhotoSlot — renders real photography when available, otherwise a labeled
+ * CSS placeholder that clearly reads "asset pending".
+ *
+ * SWAP POINT: pass a `src` string (e.g. `/photos/deck.jpg`). Until then, nothing
+ * is downloaded, generated, or stubbed as a fake image.
+ */
+type Props = {
+  src?: string | null;
+  label: string;
+  /** CSS aspect-ratio, e.g. '4/3'. Keeps layout from shifting when photos land. */
+  aspect?: string;
+  alt?: string;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+};
+
+const {
+  src = null,
+  label,
+  aspect = '4/3',
+  alt,
+  class: className = '',
+  loading = 'lazy',
+} = Astro.props;
+
+const hasPhoto = typeof src === 'string' && src.trim().length > 0;
+const Wrapper = 'div';
+---
+
+<Wrapper
+  class:list={['photo-slot', hasPhoto && '!bg-steel-800', className]}
+  style={`aspect-ratio:${aspect};`}
+>
+  {
+    hasPhoto ? (
+      <img
+        src={src}
+        alt={alt ?? label}
+        loading={loading}
+        decoding="async"
+        class="h-full w-full object-cover"
+      />
+    ) : (
+      <>
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 48 36"
+          class="h-8 w-8 opacity-40"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <rect x="0.75" y="0.75" width="46.5" height="34.5" />
+          <circle cx="11" cy="10.5" r="3" />
+          <path d="M1 30l12-11 9 8 7-6 18 15" stroke-linejoin="round" />
+        </svg>
+        <span class="photo-slot-label">
+          {label}
+          <span class="mt-1 block text-[0.5625rem] text-steel-500">photo pending</span>
+        </span>
+      </>
+    )
+  }
+</Wrapper>

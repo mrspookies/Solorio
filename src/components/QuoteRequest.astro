@@ -1,0 +1,457 @@
+---
+import { site, projectTypes, timelines, trustBadges } from '../data/site';
+
+const nextSteps = [
+  {
+    title: 'I call you back',
+    body: 'Same day, during working hours. If I miss it, I call the next morning.',
+  },
+  {
+    title: 'I walk the site',
+    body: 'I ask what you are actually trying to solve, and what you have already tried.',
+  },
+  {
+    title: 'You get a written estimate',
+    body: 'Itemized, fixed price, with what is included and what is not. No follow-up sales pitch.',
+  },
+];
+---
+
+<section id="quote" aria-labelledby="quote-heading" class="section relative">
+  <div class="container-page">
+    <div class="max-w-2xl">
+      <p class="eyebrow">Free Estimate</p>
+      <h2 id="quote-heading" class="heading-lg mt-5 text-steel-50 uppercase">
+        Tell Me What<br />You&rsquo;re Trying to Fix
+      </h2>
+      <p class="lede mt-5">
+        Fill out the sheet. You&rsquo;ll get a straight answer and a real number &mdash;
+        no pressure, and no obligation to hire me.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
+      <!-- ============ Job intake sheet ============ -->
+      <div class="card-plate relative overflow-hidden">
+        <div class="rule-accent" aria-hidden="true"></div>
+
+        <!-- clipboard clip -->
+        <span
+          class="absolute top-3 left-1/2 h-5 w-24 -translate-x-1/2 rounded-sm bg-steel-600 ring-1 ring-steel-500"
+          aria-hidden="true"></span>
+
+        <div class="relative p-6 pt-12 sm:p-8 sm:pt-14">
+          <p
+            class="mb-6 border-b border-steel-800 pb-3 font-mono text-[0.625rem] tracking-[0.2em] text-steel-500 uppercase"
+          >
+            Job Intake &mdash; Sheet 1 of 1
+          </p>
+
+          <form id="quote-form" novalidate class="space-y-5">
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label class="field-label" for="q-name">Name <span class="text-red-300">*</span></label>
+                <input
+                  class="field-input"
+                  type="text"
+                  id="q-name"
+                  name="name"
+                  autocomplete="name"
+                  required
+                  minlength="2"
+                  placeholder="Your name"
+                />
+                <span class="field-error hidden" data-error-for="q-name"></span>
+              </div>
+
+              <div>
+                <label class="field-label" for="q-phone">
+                  Phone <span class="text-red-300">*</span>
+                </label>
+                <input
+                  class="field-input"
+                  type="tel"
+                  id="q-phone"
+                  name="phone"
+                  autocomplete="tel"
+                  required
+                  inputmode="tel"
+                  placeholder="(555) 000-0000"
+                />
+                <span class="field-error hidden" data-error-for="q-phone"></span>
+              </div>
+            </div>
+
+            <div>
+              <label class="field-label" for="q-email">
+                Email <span class="text-red-300">*</span>
+              </label>
+              <input
+                class="field-input"
+                type="email"
+                id="q-email"
+                name="email"
+                autocomplete="email"
+                required
+                placeholder="you@example.com"
+              />
+              <span class="field-error hidden" data-error-for="q-email"></span>
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label class="field-label" for="q-type">
+                  Project type <span class="text-red-300">*</span>
+                </label>
+                <select class="field-input" id="q-type" name="projectType" required>
+                  <option value="">Select one&hellip;</option>
+                  {projectTypes.map((type) => <option value={type}>{type}</option>)}
+                </select>
+                <span class="field-error hidden" data-error-for="q-type"></span>
+              </div>
+
+              <div>
+                <label class="field-label" for="q-timeline">
+                  Timeline <span class="text-red-300">*</span>
+                </label>
+                <select class="field-input" id="q-timeline" name="timeline" required>
+                  <option value="">Select one&hellip;</option>
+                  {timelines.map((option) => <option value={option}>{option}</option>)}
+                </select>
+                <span class="field-error hidden" data-error-for="q-timeline"></span>
+              </div>
+            </div>
+
+            <div>
+              <label class="field-label" for="q-address">
+                Project address / town <span class="text-red-300">*</span>
+              </label>
+              <input
+                class="field-input"
+                type="text"
+                id="q-address"
+                name="address"
+                autocomplete="street-address"
+                required
+                minlength="4"
+                placeholder="Street and town"
+              />
+              <span class="field-error hidden" data-error-for="q-address"></span>
+            </div>
+
+            <div>
+              <label class="field-label" for="q-details">
+                What&rsquo;s the job? <span class="text-red-300">*</span>
+              </label>
+              <textarea
+                class="field-input resize-y"
+                id="q-details"
+                name="details"
+                rows="5"
+                required
+                minlength="20"
+                placeholder="What are you trying to fix or build? What is wrong with it, and how long has it been that way?"></textarea>
+              <div class="mt-1.5 flex items-center justify-between gap-3">
+                <span class="field-error hidden" data-error-for="q-details"></span>
+                <span
+                  class="ml-auto font-mono text-[0.625rem] tracking-[0.1em] text-steel-500 uppercase"
+                  data-counter-for="q-details"
+                >
+                  0 / 20 min
+                </span>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 pt-2 sm:flex-row">
+              <button type="submit" class="btn-cta w-full sm:w-auto">
+                Send It &mdash; Get My Free Estimate
+              </button>
+              <a href={site.phoneHref} class="btn-ghost w-full sm:w-auto">
+                Or call {site.phoneDisplay}
+              </a>
+            </div>
+
+            <p class="font-mono text-[0.625rem] leading-relaxed tracking-[0.06em] text-steel-500 uppercase">
+              No spam, no list, no sharing your details. This form is a front-end
+              demonstration and does not yet submit anywhere &mdash; please call for the
+              fastest response.
+            </p>
+          </form>
+
+          <!-- Success panel (front-end stub) -->
+          <div
+            id="quote-success"
+            class="hidden border border-red-500/40 bg-red-500/5 p-6"
+            role="status"
+            aria-live="polite"
+          >
+            <div class="flex items-start gap-3">
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                class="mt-0.5 h-6 w-6 shrink-0 text-red-300"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+              <div>
+                <h3 class="font-display text-3xl leading-none text-steel-50 uppercase">
+                  Request Noted
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-steel-300">
+                  Your details passed validation. In a live deployment this would land
+                  straight in my inbox and I&rsquo;d call you back the same day.
+                </p>
+                <p class="mt-4 text-sm text-steel-200">
+                  Need it sooner? Call
+                  <a href={site.phoneHref} class="text-red-300 underline">{site.phoneDisplay}</a>
+                  or email
+                  <a href={`mailto:${site.email}`} class="text-red-300 underline">{site.email}</a>.
+                </p>
+                <button type="button" id="quote-reset" class="btn-ghost mt-6">
+                  Submit another request
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ Reassurance rail ============ -->
+      <aside class="lg:sticky lg:top-28 lg:self-start">
+        <h3 class="font-mono text-[0.6875rem] tracking-[0.2em] text-steel-400 uppercase">
+          What happens next
+        </h3>
+        <ol class="mt-5 space-y-5">
+          {
+            nextSteps.map((step, index) => (
+              <li class="flex gap-4 border-l-2 border-steel-700 pl-4 transition-colors hover:border-gold-500">
+                <span class="font-display text-2xl leading-none text-gold-500" aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span>
+                  <span class="block font-display text-xl leading-none text-steel-50 uppercase">
+                    {step.title}
+                  </span>
+                  <span class="mt-2 block text-sm leading-relaxed text-steel-400">
+                    {step.body}
+                  </span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+
+        <div class="card-plate relative mt-8 overflow-hidden p-6">
+          <div class="rule-accent absolute inset-x-0 top-0" aria-hidden="true"></div>
+          <dl class="space-y-4">
+            {
+              trustBadges.map((badge) => (
+                <div class="flex items-start gap-3">
+                  <dt class="flex shrink-0 items-center gap-2 font-mono text-[0.625rem] tracking-[0.16em] text-gold-400 uppercase">
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      class="h-3.5 w-3.5 text-red-300"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                    {badge.label}
+                  </dt>
+                  <dd class="text-sm leading-snug text-steel-300">{badge.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+
+        <div class="mt-8 border border-steel-800 bg-steel-900 p-6">
+          <p class="eyebrow">Or just call</p>
+          <a
+            href={site.phoneHref}
+            class="mt-3 block font-display text-4xl leading-none text-red-300 transition-colors hover:text-red-200 sm:text-5xl"
+          >
+            {site.phoneDisplay}
+          </a>
+          <a
+            href={`mailto:${site.email}`}
+            class="mt-4 inline-block font-mono text-xs tracking-[0.12em] text-steel-300 break-all transition-colors hover:text-gold-300"
+          >
+            {site.email}
+          </a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initQuoteForm(): void {
+    const formEl = document.getElementById('quote-form');
+    const successEl = document.getElementById('quote-success');
+    const resetEl = document.getElementById('quote-reset');
+    if (!(formEl instanceof HTMLFormElement)) return;
+    if (!(successEl instanceof HTMLElement) || !(resetEl instanceof HTMLButtonElement)) return;
+
+    // Explicit types so the closures below need no further narrowing.
+    const form: HTMLFormElement = formEl;
+    const success: HTMLElement = successEl;
+    const reset: HTMLButtonElement = resetEl;
+
+    if (form.dataset['ready'] === 'true') return;
+    form.dataset['ready'] = 'true';
+
+    const MIN_DETAILS = 20;
+
+    const showError = (field: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement, message: string): void => {
+      const slot = form.querySelector<HTMLElement>(`[data-error-for="${field.id}"]`);
+      field.setAttribute('aria-invalid', 'true');
+      if (slot) {
+        slot.textContent = message;
+        slot.classList.remove('hidden');
+      }
+    };
+
+    const clearError = (field: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement): void => {
+      const slot = form.querySelector<HTMLElement>(`[data-error-for="${field.id}"]`);
+      field.removeAttribute('aria-invalid');
+      if (slot) {
+        slot.textContent = '';
+        slot.classList.add('hidden');
+      }
+    };
+
+    /** Returns an error string, or '' when the field is acceptable. */
+    const validate = (
+      field: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement,
+    ): string => {
+      const value = field.value.trim();
+
+      if (field.id === 'q-phone') {
+        const digits = value.replace(/\D/g, '');
+        if (digits.length < 10) return 'Need at least 10 digits';
+        if (digits.length > 15) return 'That is too many digits';
+        return '';
+      }
+
+      if (field.id === 'q-email') {
+        if (!value) return 'Email is required';
+        // Deliberately permissive: reject only what is obviously not an address.
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) return 'Check this email address';
+        return '';
+      }
+
+      if (field.id === 'q-details') {
+        if (value.length < MIN_DETAILS) {
+          return `${MIN_DETAILS - value.length} more character${MIN_DETAILS - value.length === 1 ? '' : 's'} needed`;
+        }
+        return '';
+      }
+
+      if (field.id === 'q-type' || field.id === 'q-timeline') {
+        return value ? '' : 'Pick one';
+      }
+
+      if (field.id === 'q-name') {
+        return value.length >= 2 ? '' : 'Enter your name';
+      }
+
+      if (field.id === 'q-address') {
+        return value.length >= 4 ? '' : 'Enter the project address or town';
+      }
+
+      return '';
+    };
+
+    const fields = Array.from(
+      form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+        'input, select, textarea',
+      ),
+    );
+
+    // Live character counter for the details textarea.
+    const details = form.querySelector<HTMLTextAreaElement>('#q-details');
+    const counter = form.querySelector<HTMLElement>('[data-counter-for="q-details"]');
+    if (details && counter) {
+      const paint = (): void => {
+        const length = details.value.trim().length;
+        counter.textContent = `${length} / ${MIN_DETAILS} min`;
+        counter.classList.toggle('text-red-300', length > 0 && length < MIN_DETAILS);
+        counter.classList.toggle('text-gold-400', length >= MIN_DETAILS);
+      };
+      details.addEventListener('input', paint);
+      paint();
+    }
+
+    // Re-validate on blur once the field has been touched.
+    fields.forEach((field) => {
+      field.addEventListener('blur', () => {
+        const message = validate(field);
+        if (message) showError(field, message);
+        else clearError(field);
+      });
+      field.addEventListener('input', () => {
+        if (field.getAttribute('aria-invalid') === 'true') {
+          const message = validate(field);
+          if (message) showError(field, message);
+          else clearError(field);
+        }
+      });
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      let firstInvalid: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null =
+        null;
+
+      // for...of (not forEach) so the assignment to firstInvalid is visible to TS.
+      for (const field of fields) {
+        const message = validate(field);
+        if (message) {
+          showError(field, message);
+          if (firstInvalid === null) firstInvalid = field;
+        } else {
+          clearError(field);
+        }
+      }
+
+      if (firstInvalid) {
+        firstInvalid.focus();
+        firstInvalid.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        return;
+      }
+
+      // Front-end stub — no backend is wired up. Replace this with a real POST.
+      form.classList.add('hidden');
+      success.classList.remove('hidden');
+      success.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
+
+    reset.addEventListener('click', () => {
+      form.reset();
+      fields.forEach(clearError);
+      if (details && counter) {
+        counter.textContent = `0 / ${MIN_DETAILS} min`;
+        counter.classList.remove('text-red-300');
+        counter.classList.add('text-gold-400');
+      }
+      success.classList.add('hidden');
+      form.classList.remove('hidden');
+      const first = form.querySelector<HTMLInputElement>('input');
+      first?.focus();
+    });
+  }
+
+  initQuoteForm();
+  document.addEventListener('astro:after-swap', initQuoteForm);
+</script>

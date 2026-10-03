@@ -1,0 +1,109 @@
+---
+import { site, navItems, trustBadges } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="surface-brutal relative overflow-hidden border-t border-steel-800 bg-steel-950">
+  <div class="rule-accent" aria-hidden="true"></div>
+
+  <div class="container-page">
+    <div class="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      <!-- Identity -->
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="h-6 w-1.5 bg-red-500" aria-hidden="true"></span>
+          <span class="font-display text-xl tracking-[0.18em] text-steel-50"
+            >{site.name.toUpperCase()}</span
+          >
+        </div>
+        <p class="mt-4 max-w-[34ch] text-sm leading-relaxed text-steel-400">
+          Master carpentry and general contracting. Framing, finish work, remodeling,
+          and the heavy structural repairs nobody else will take.
+        </p>
+        <a
+          href={site.phoneHref}
+          class="mt-5 inline-block font-mono text-sm tracking-[0.1em] text-red-300 transition-colors hover:text-red-200"
+        >
+          {site.phoneDisplay}
+        </a>
+        <a
+          href={`mailto:${site.email}`}
+          class="mt-1.5 block font-mono text-xs tracking-[0.1em] text-steel-400 break-all transition-colors hover:text-gold-300"
+        >
+          {site.email}
+        </a>
+      </div>
+
+      <!-- Nav -->
+      <nav aria-label="Footer">
+        <h2 class="font-mono text-[0.625rem] tracking-[0.2em] text-steel-500 uppercase">
+          Sections
+        </h2>
+        <ul class="mt-4 space-y-2.5">
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="text-sm text-steel-400 transition-colors hover:text-gold-300"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <!-- Credentials -->
+      <div>
+        <h2 class="font-mono text-[0.625rem] tracking-[0.2em] text-steel-500 uppercase">
+          Credentials
+        </h2>
+        <ul class="mt-4 space-y-2.5">
+          {
+            trustBadges.map((badge) => (
+              <li class="text-sm leading-snug text-steel-400">
+                <span class="text-gold-400">{badge.label}</span>
+                <span class="block text-steel-500">{badge.value}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Service area -->
+      <div>
+        <h2 class="font-mono text-[0.625rem] tracking-[0.2em] text-steel-500 uppercase">
+          Coverage
+        </h2>
+        <p class="mt-4 text-sm leading-relaxed text-steel-400">{site.serviceArea}</p>
+        <p class="mt-4 font-mono text-[0.625rem] tracking-[0.14em] text-steel-500 uppercase">
+          {site.licenseNumber}
+        </p>
+      </div>
+    </div>
+
+    <!-- Oversized engraved wordmark -->
+    <div class="relative select-none overflow-hidden" aria-hidden="true">
+      <span
+        class="block translate-y-[22%] text-center font-display text-[19vw] leading-none text-transparent"
+        style="-webkit-text-stroke: 1px rgba(255,255,255,0.05);"
+      >
+        {site.name.toUpperCase()}
+      </span>
+    </div>
+
+    <div
+      class="flex flex-col items-center justify-between gap-2 border-t border-steel-800 py-6 sm:flex-row"
+    >
+      <p class="font-mono text-[0.625rem] tracking-[0.14em] text-steel-500 uppercase">
+        &copy; {year} {site.legalName}. All rights reserved.
+      </p>
+      <p class="font-mono text-[0.625rem] tracking-[0.14em] text-steel-500 uppercase">
+        {site.licenseNumber}
+      </p>
+    </div>
+  </div>
+</footer>

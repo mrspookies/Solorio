@@ -1,0 +1,94 @@
+---
+import { site, craftStats } from '../data/site';
+import PhotoSlot from './PhotoSlot.astro';
+
+const principles = [
+  'I price the whole job up front, so the number I give you is the number you pay.',
+  'I pull my own permits and I close them myself — including the inspections.',
+  'The site gets cleaned every day, not just at the end.',
+  'You get a punch list in writing, and I finish it before I take the final draw.',
+];
+---
+
+<section id="craftsman" aria-labelledby="craftsman-heading" class="section relative">
+  <div class="container-page grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+    <!-- Mounted portrait plate -->
+    <div class="lg:sticky lg:top-28 lg:self-start">
+      <div class="card-plate relative overflow-hidden">
+        <div class="rule-accent" aria-hidden="true"></div>
+        <PhotoSlot
+          src={site.craftsmanPhoto}
+          label="The craftsman"
+          alt="Portrait of the craftsman — photography pending"
+          aspect="4/5"
+          loading="eager"
+        />
+      </div>
+      <p class="mt-4 font-mono text-[0.625rem] tracking-[0.18em] text-steel-500 uppercase">
+        {site.licenseNumber} &middot; Licensed &amp; Insured
+      </p>
+    </div>
+
+    <div>
+      <p class="eyebrow">About</p>
+      <h2 id="craftsman-heading" class="heading-lg mt-5 text-steel-50 uppercase">
+        Decades of<br />Hands-On Work
+      </h2>
+
+      <div class="mt-6 space-y-5 text-[0.9375rem] leading-relaxed text-steel-300">
+        <p>
+          I started carrying lumber and reading tape measures before I drove. What
+          changed over thirty-plus years is the size of the jobs, not the method.
+          A stud wall goes in the same way it always did &mdash; square, plumb, and
+          fastened for the next fifty years.
+        </p>
+        <p>
+          I run my own crew. When you call me, you get me. That&rsquo;s the whole
+          reason the work holds together: the person who quotes the job is the
+          person standing on the framing, and the person answering the phone six
+          months later when something needs to be squared away.
+        </p>
+        <p>
+          I&rsquo;m not interested in volume. I&rsquo;m interested in the crew that
+          comes back ten years later with another job &mdash; and the neighbors
+          they send you. Most of my work now comes from exactly that.
+        </p>
+      </div>
+
+      <!-- Stats -->
+      <dl class="mt-10 grid grid-cols-1 gap-px border border-steel-800 bg-steel-800 sm:grid-cols-3">
+        {
+          craftStats.map((stat) => (
+            <div class="bg-steel-900 px-5 py-5">
+              <dd class="font-display text-4xl leading-none text-gold-400 sm:text-5xl">
+                {stat.value}
+              </dd>
+              <dt class="mt-2 font-mono text-[0.625rem] leading-snug tracking-[0.14em] text-steel-400 uppercase">
+                {stat.label}
+              </dt>
+            </div>
+          ))
+        }
+      </dl>
+
+      <!-- Working principles -->
+      <h3 class="mt-12 font-mono text-[0.6875rem] tracking-[0.2em] text-steel-400 uppercase">
+        How I work
+      </h3>
+      <ul class="mt-4 space-y-3">
+        {
+          principles.map((item, index) => (
+            <li class="flex gap-4 border-l-2 border-steel-700 pl-4 text-[0.9375rem] leading-relaxed text-steel-300 transition-colors hover:border-gold-500">
+              <span class="font-mono text-xs text-gold-500" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span>{item}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <a href="#quote" class="btn-cta mt-10">Get a Free Estimate</a>
+    </div>
+  </div>
+</section>

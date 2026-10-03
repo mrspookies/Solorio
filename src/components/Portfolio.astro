@@ -1,0 +1,210 @@
+---
+import { projects, projectCategories } from '../data/site';
+import PhotoSlot from './PhotoSlot.astro';
+import ProjectFilter from './ProjectFilter.astro';
+import BeforeAfterSlider from './BeforeAfterSlider.astro';
+
+const categoryLabel = (id: string): string =>
+  projectCategories.find((category) => category.id === id)?.label ?? id;
+---
+
+<section id="work" aria-labelledby="work-heading" class="section section-band surface-brushed">
+  <div class="container-page">
+    <div class="max-w-2xl">
+      <p class="eyebrow">Recent Work</p>
+      <h2 id="work-heading" class="heading-lg mt-5 text-steel-50 uppercase">The Portfolio</h2>
+      <p class="lede mt-5">
+        Real scopes, real structural problems. Photography is being added as jobs come
+        out of the ground &mdash; each entry below is listed by scope and location.
+      </p>
+    </div>
+
+    <div class="mt-10">
+      <ProjectFilter active="all" />
+      <p
+        id="filter-status"
+        class="mt-4 font-mono text-[0.6875rem] tracking-[0.14em] text-steel-500 uppercase"
+        role="status"
+        aria-live="polite"
+      >
+        Showing all {projects.length} projects
+      </p>
+    </div>
+
+    <div id="project-grid" class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        projects.map((project, index) => (
+          <article
+            data-category={project.category}
+            class:list={[
+              'card-plate hover-sweep hover-lift group flex flex-col',
+              index === 0 && 'lg:col-span-2',
+            ]}
+          >
+            <div class="relative overflow-hidden">
+              <PhotoSlot
+                src={project.photo}
+                label={project.photoLabel}
+                alt={`${project.title} — project photography pending`}
+                aspect={index === 0 ? '16/9' : project.aspect}
+                class="transition-[filter] duration-300 group-hover:brightness-125"
+              />
+              <span class="absolute bottom-3 left-3 border border-steel-600 bg-steel-950/85 px-2 py-1 font-mono text-[0.5625rem] tracking-[0.18em] text-gold-300 uppercase backdrop-blur">
+                {categoryLabel(project.category)}
+              </span>
+            </div>
+
+            <div class="flex flex-1 flex-col p-5">
+              <p class="font-mono text-[0.625rem] tracking-[0.16em] text-steel-500 uppercase">
+                {project.location}
+              </p>
+
+              <h3 class="mt-2.5 font-display text-2xl leading-tight text-steel-50">
+                {project.title}
+              </h3>
+
+              <p class="mt-2.5 text-sm leading-relaxed text-steel-300">{project.summary}</p>
+
+              <ul class="mt-4 flex flex-wrap gap-1.5">
+                {project.scope.map((item) => (
+                  <li class="border border-steel-700 px-2 py-1 font-mono text-[0.625rem] tracking-[0.08em] text-gold-300 uppercase">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+
+              {project.beforeAfter && (
+                <a href={`#${project.id}-ba`} class="btn-link mt-auto pt-6 self-start">
+                  Before / after
+                </a>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Before/after comparisons -->
+<section aria-labelledby="ba-heading" class="section">
+  <div class="container-page">
+    <div class="max-w-2xl">
+      <p class="eyebrow">Transformations</p>
+      <h2 id="ba-heading" class="heading-sm mt-5 text-steel-50 uppercase">
+        Before &amp; After
+      </h2>
+      <p class="lede mt-5">
+        Drag the handle &mdash; or use your arrow keys &mdash; to compare. Once project
+        photography lands, these become true before/after comparisons.
+      </p>
+    </div>
+
+    <div class="mt-10 grid gap-8 lg:grid-cols-3">
+      {
+        projects.map((project) =>
+          project.beforeAfter ? (
+            <article class="card-plate flex flex-col overflow-hidden">
+              <BeforeAfterSlider
+                id={`${project.id}-ba`}
+                before={project.beforeAfter.before}
+                after={project.beforeAfter.after}
+                aspect="4/3"
+              />
+              <div class="flex flex-1 flex-col p-5">
+                <h3 class="font-display text-2xl leading-tight text-steel-50">
+                  {project.title}
+                </h3>
+                <p class="mt-2 text-sm leading-relaxed text-steel-300">
+                  {project.beforeAfter.summary}
+                </p>
+                <p class="mt-auto pt-4 font-mono text-[0.625rem] tracking-[0.16em] text-steel-500 uppercase">
+                  {project.location}
+                </p>
+              </div>
+            </article>
+          ) : null,
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  function initPortfolio(): void {
+    const filter = document.getElementById('project-filter');
+    const grid = document.getElementById('project-grid');
+    const status = document.getElementById('filter-status');
+    if (!filter || !grid || !status) return;
+    if (filter.dataset['ready'] === 'true') return;
+    filter.dataset['ready'] = 'true';
+
+    const buttons = filter.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const tiles = grid.querySelectorAll<HTMLElement>('[data-category]');
+    const total = tiles.length;
+
+    // Full literal class strings — Tailwind only emits what it finds in source.
+    const ACTIVE: readonly string[] = [
+      'border-red-500',
+      'bg-red-500',
+      'text-steel-50',
+    ];
+    const ACTIVE_COUNT: readonly string[] = ['text-steel-50/70'];
+    const IDLE: readonly string[] = ['border-steel-700', 'text-steel-300'];
+    const IDLE_COUNT: readonly string[] = ['text-steel-500'];
+
+    // classList.toggle's overloads reject spread args, so apply them one by one.
+    const swap = (el: Element, on: readonly string[], off: readonly string[], active: boolean): void => {
+      on.forEach((token) => el.classList.toggle(token, active));
+      off.forEach((token) => el.classList.toggle(token, !active));
+    };
+
+    const sync = (button: HTMLButtonElement, isActive: boolean): void => {
+      button.setAttribute('aria-pressed', String(isActive));
+      swap(button, ACTIVE, IDLE, isActive);
+
+      const counter = button.querySelector<HTMLElement>('span');
+      if (counter) swap(counter, ACTIVE_COUNT, IDLE_COUNT, isActive);
+    };
+
+    const apply = (category: string): void => {
+      let shown = 0;
+
+      tiles.forEach((tile) => {
+        const match = category === 'all' || tile.dataset['category'] === category;
+        tile.hidden = !match;
+        if (match) shown += 1;
+      });
+
+      buttons.forEach((button) => {
+        sync(button, button.dataset['filter'] === category);
+      });
+
+      const label =
+        category === 'all'
+          ? `Showing all ${total} projects`
+          : `Showing ${shown} of ${total} projects`;
+
+      // Grammar guard for empty categories.
+      status.textContent = shown === 0 ? 'No projects in that category yet' : label;
+    };
+
+    filter.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const button = target.closest<HTMLButtonElement>('[data-filter]');
+      if (!button) return;
+      apply(button.dataset['filter'] ?? 'all');
+    });
+
+    // Deep link support: /#work?filter=repair
+    const params = new URLSearchParams(window.location.search);
+    const requested = params.get('filter');
+    if (requested && buttons.length > 0) {
+      apply(requested);
+    }
+  }
+
+  initPortfolio();
+  document.addEventListener('astro:after-swap', initPortfolio);
+</script>

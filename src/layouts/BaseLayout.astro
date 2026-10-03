@@ -1,0 +1,92 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+
+type Props = {
+  title?: string;
+  description?: string;
+};
+
+const {
+  title = `${site.name} — ${site.tagline}`,
+  description = `${site.name} is a master carpenter and general contractor doing custom framing, finish carpentry, remodeling, and heavy structural repairs. Licensed, insured, and built to outlast the house.`,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+
+    <meta name="theme-color" content="#090b0d" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Local business / service area signals -->
+    <meta name="author" content={site.legalName} />
+    <meta name="geo.region" content="US" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!--
+      Empty data URL. Without an icon tag the browser auto-requests /favicon.ico
+      and logs a 404. A real mark waits on brand assets — replace the href then.
+    -->
+    <link rel="icon" href="data:," />
+
+    <!--
+      Structured data. Phone/email/license are clearly marked placeholders —
+      swap in real values before launch.
+    -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'GeneralContractor',
+        name: site.name,
+        description,
+        url: canonical.href,
+        telephone: site.phoneHref,
+        email: site.email,
+        areaServed: site.serviceArea,
+        priceRange: '$$',
+        knowsAbout: [
+          'Custom framing',
+          'Finish carpentry',
+          'Remodeling',
+          'Structural repair',
+        ],
+      })}
+    />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-red-500 focus:px-4 focus:py-2 focus:font-mono focus:text-xs focus:tracking-widest focus:text-steel-50 focus:uppercase"
+    >
+      Skip to content
+    </a>
+
+    <slot />
+
+    <noscript>
+      <div class="border-t border-steel-700 bg-steel-900 px-5 py-4 text-center text-sm text-steel-300">
+        <strong class="text-gold-400">Note:</strong> the project gallery filter and
+        before/after sliders need JavaScript. Call
+        <a class="text-red-300 underline" href={site.phoneHref}>{site.phoneDisplay}</a>
+        to book directly.
+      </div>
+    </noscript>
+  </body>
+</html>
